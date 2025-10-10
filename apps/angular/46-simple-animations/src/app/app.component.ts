@@ -1,8 +1,16 @@
+import {
+  animate,
+  query,
+  stagger,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { Component } from '@angular/core';
-
 @Component({
   imports: [],
   selector: 'app-root',
+  standalone: true,
   styles: `
     section {
       @apply flex flex-1 flex-col gap-5;
@@ -16,6 +24,22 @@ import { Component } from '@angular/core';
       }
     }
   `,
+  animations: [
+    trigger('listAnimation', [
+      transition(':enter', [
+        query('.list-item', [
+          style({ opacity: 0, transform: 'translateY(20px)' }),
+          stagger(100, [
+            animate(
+              '0.4s ease-out',
+              style({ opacity: 1, transform: 'translateY(0)' }),
+            ),
+          ]),
+        ]),
+      ]),
+    ]),
+  ],
+
   template: `
     <div class="mx-20 my-40 flex gap-5">
       <section>
@@ -50,7 +74,7 @@ import { Component } from '@angular/core';
         </div>
       </section>
 
-      <section>
+      <section [@listAnimation]>
         <div class="list-item">
           <span>Name:</span>
           <span>Samuel</span>
